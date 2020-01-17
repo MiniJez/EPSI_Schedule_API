@@ -1,0 +1,19 @@
+{
+  "name": "epsi_schedule_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Mini Jez",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jquery": "^3.4.1",
+    "jsdom": "^15.1.1",
+    "moment": "^2.24.0",
+    "request-promise-native": "^1.0.7"
+  }
+}
