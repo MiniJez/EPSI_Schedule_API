@@ -8,9 +8,11 @@ moment.locale('fr');
 
 app.get('/schedule/day', async (req, res) => {
     let date = req.query.date
-    const today = moment(date)
+    let name = req.query.name
+    let lastName = req.query.lastName
+    const today = moment(date + "T12:00:00")
     date = today.clone();
-    let schedule = await processForOneFixedDay(date);
+    let schedule = await processForOneFixedDay(date, name, lastName);
     res.send(schedule)
 })
 
@@ -25,32 +27,40 @@ app.get('/schedule/weekDate', async (req, res) => {
 })
 
 app.get('/schedule/week', async (req, res) => {
+    let name = req.query.name
+    let lastName = req.query.lastName
     const today = moment()
     let date = today.clone();
-    let schedule = await processForAWeekFixedDate(date);
+    let schedule = await processForAWeekFixedDate(date, name, lastName);
     res.send(schedule)
 })
 
 app.get('/schedule/nextweek', async (req, res) => {
+    let name = req.query.name
+    let lastName = req.query.lastName
     const today = moment()
     let date = today.clone();
     date.weekday(7);
-    let schedule = await processForAWeekFixedDate(date);
+    let schedule = await processForAWeekFixedDate(date, name, lastName);
     res.send(schedule)
 })
 
 app.get('/schedule/today', async (req, res) => {
+    let name = req.query.name
+    let lastName = req.query.lastName
     const today = moment()
     let date = today.clone();
-    let schedule = await processForOneFixedDay(date);
+    let schedule = await processForOneFixedDay(date, name, lastName);
     res.send(schedule)
 })
 
 app.get('/schedule/tomorrow', async (req, res) => {
+    let name = req.query.name
+    let lastName = req.query.lastName
     const today = moment()
     let date = today.clone();
     date.date(date.date() + 1);
-    let schedule = await processForOneFixedDay(date);
+    let schedule = await processForOneFixedDay(date, name, lastName);
     res.send(schedule)
 })
 
@@ -84,7 +94,6 @@ function getLessonInfos (htmlBody, schedule, date, id) {
         const salle = $($(tab[i]).find('.Salle')).html();
         id = id + i
         let isoDate = date.toDate()
-        console.log(isoDate)
 
         schedule.push(
             {
@@ -110,9 +119,9 @@ function firstLetterToUpper (string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
   
-async function processForOneFixedDay (date) {
+async function processForOneFixedDay (date, name, lastName) {
     let schedule = []
-    const url = getUrl(date.date(), date.month() + 1, date.year());
+    const url = getUrl(date.date(), date.month() + 1, date.year(), name, lastName);
     const htmlBody = await getData(url);
     schedule, id = getLessonInfos(htmlBody, schedule, date, 0);
     
